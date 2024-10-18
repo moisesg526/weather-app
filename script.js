@@ -2,13 +2,31 @@ let key = "S5993HFYTHTPJ65Q3QMB3NEEJ";
 let locationOfWeather = prompt("Location");
 
 let weatherBlock = document.querySelector(".weather-block");
+
+let addressBanner = document.createElement("div");
+addressBanner.setAttribute("class", "addressBanner");
+weatherBlock.appendChild(addressBanner);
+
 let h1 = document.createElement("h1");
 weatherBlock.appendChild(h1);
 
-function WeatherData(temp, address, description) {
+let h3 = document.createElement("h3");
+weatherBlock.appendChild(h3);
+
+function WeatherData(
+  temp,
+  address,
+  description,
+  humidity,
+  windgust,
+  visibility
+) {
   this.temp = temp;
   this.address = address;
   this.description = description;
+  this.humidity = humidity;
+  this.windgust = windgust;
+  this.visibility = visibility;
 }
 
 fetch(
@@ -19,16 +37,26 @@ fetch(
   .then((data) => {
     const displayInfo = new WeatherData(
       data.currentConditions.temp,
-      data.address,
-      data.currentConditions.conditions
+      data.resolvedAddress,
+      data.currentConditions.conditions,
+      data.currentConditions.humidity,
+      data.currentConditions.windgust,
+      data.currentConditions.visibility
     );
 
     console.log(displayInfo);
     function displayWeatherData() {
-      h1.innerHTML = `${displayInfo.address} <br>
-        ${displayInfo.temp} <br>
-        ${displayInfo.description}
+      addressBanner.innerHTML = `Weather in
+        ${displayInfo.address} <br>`;
+      h1.innerHTML = `
+        ${displayInfo.temp}°
     `;
+      h3.innerHTML = `
+        ${displayInfo.description} <br>
+        Humidity ${displayInfo.humidity}<br>
+        Wind ${displayInfo.windgust}<br>
+        Visibility ${displayInfo.visibility}<br>
+        `;
     }
     displayWeatherData();
   })
