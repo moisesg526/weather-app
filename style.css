@@ -1,6 +1,12 @@
 * {
   background-color: rgb(130, 202, 202);
 }
+
+body {
+    display: grid;
+    place-items: center;
+}
+
 .weather-block {
   display: flex;
   flex-direction: column;
@@ -11,6 +17,8 @@ h1 {
   color: #000;
   font-size: 4rem;
 }
+
+
 
 .addressBanner {
   background-color: rgba(0, 0, 0, 0.7);
