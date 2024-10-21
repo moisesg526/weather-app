@@ -2,6 +2,8 @@ let key = "S5993HFYTHTPJ65Q3QMB3NEEJ";
 let locationOfWeather = prompt("Location");
 
 let weatherBlock = document.querySelector(".weather-block");
+let weatherTable = document.createElement("div");
+weatherBlock.appendChild(weatherTable);
 
 let addressBanner = document.createElement("div");
 addressBanner.setAttribute("class", "addressBanner");
@@ -10,8 +12,14 @@ weatherBlock.appendChild(addressBanner);
 let h1 = document.createElement("h1");
 weatherBlock.appendChild(h1);
 
-let h3 = document.createElement("h3");
-weatherBlock.appendChild(h3);
+let weatherDataTitle = document.createElement("div");
+weatherDataTitle.setAttribute("class", "weather-data-title");
+weatherTable.appendChild(weatherDataTitle);
+
+let weatherData = document.createElement("h3");
+weatherTable.appendChild(weatherData);
+
+let dataTitle = ["Humidity", "Wind", "visibility"];
 
 function WeatherData(
   temp,
@@ -51,12 +59,15 @@ fetch(
       h1.innerHTML = `
         ${displayInfo.temp}°
     `;
-      h3.innerHTML = `
-        ${displayInfo.description} <br>
-        Humidity ${displayInfo.humidity}<br>
-        Wind ${displayInfo.windgust}<br>
-        Visibility ${displayInfo.visibility}<br>
-        `;
+
+      let dataTitleSelector = document.querySelectorAll(".weather-data-title");
+      dataTitleSelector.forEach((displayedTitle) => {
+        dataTitle.forEach((title) => {
+          const h3 = document.createElement("h3");
+          h3.innerHTML = title;
+          displayedTitle.appendChild(h3);
+        });
+      });
     }
     displayWeatherData();
   })
