@@ -3,11 +3,11 @@ let locationOfWeather = prompt("Location");
 
 let weatherBlock = document.querySelector(".weather-block");
 let weatherTable = document.createElement("div");
+weatherTable.setAttribute("class", "weather-table");
 weatherBlock.appendChild(weatherTable);
 
 let addressBanner = document.createElement("div");
 addressBanner.setAttribute("class", "addressBanner");
-weatherBlock.appendChild(addressBanner);
 
 let h1 = document.createElement("h1");
 weatherBlock.appendChild(h1);
@@ -16,7 +16,8 @@ let weatherDataTitle = document.createElement("div");
 weatherDataTitle.setAttribute("class", "weather-data-title");
 weatherTable.appendChild(weatherDataTitle);
 
-let weatherData = document.createElement("h3");
+let weatherData = document.createElement("div");
+weatherData.setAttribute("class", "weather-data");
 weatherTable.appendChild(weatherData);
 
 let dataTitle = ["Humidity", "Wind", "visibility"];
@@ -44,29 +45,36 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     const displayInfo = new WeatherData(
-      data.currentConditions.temp,
+      Math.round(data.currentConditions.temp),
       data.resolvedAddress,
       data.currentConditions.conditions,
-      data.currentConditions.humidity,
-      data.currentConditions.windgust,
-      data.currentConditions.visibility
+      Math.round(data.currentConditions.humidity),
+      Math.round(data.currentConditions.windgust),
+      Math.round(data.currentConditions.visibility)
     );
 
-    console.log(displayInfo);
+    let displayWeatherDataArray = [];
+    displayWeatherDataArray.push(displayInfo);
+
+    // console.log(displayInfo);
     function displayWeatherData() {
+      weatherBlock.appendChild(addressBanner);
       addressBanner.innerHTML = `Weather in
         ${displayInfo.address} <br>`;
       h1.innerHTML = `
         ${displayInfo.temp}°
     `;
 
-      let dataTitleSelector = document.querySelectorAll(".weather-data-title");
-      dataTitleSelector.forEach((displayedTitle) => {
-        dataTitle.forEach((title) => {
-          const h3 = document.createElement("h3");
-          h3.innerHTML = title;
-          displayedTitle.appendChild(h3);
-        });
+      dataTitle.forEach((title) => {
+        const h3 = document.createElement("h3");
+        h3.innerHTML = title;
+        weatherDataTitle.appendChild(h3);
+      });
+
+      displayWeatherDataArray.forEach((info) => {
+        const h3 = document.createElement("h3");
+        h3.innerHTML = `${info.humidity} ${info.windgust} ${info.visibility}`;
+        weatherData.appendChild(h3);
       });
     }
     displayWeatherData();
