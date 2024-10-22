@@ -2,22 +2,30 @@ let key = "S5993HFYTHTPJ65Q3QMB3NEEJ";
 let locationOfWeather = prompt("Location");
 
 let weatherBlock = document.querySelector(".weather-block");
-let weatherTable = document.createElement("div");
-weatherTable.setAttribute("class", "weather-table");
-weatherBlock.appendChild(weatherTable);
+
+let h1 = document.createElement("h1");
 
 let addressBanner = document.createElement("div");
 addressBanner.setAttribute("class", "addressBanner");
 
-let h1 = document.createElement("h1");
-weatherBlock.appendChild(h1);
+let conditionStatement = document.createElement("div");
+conditionStatement.setAttribute("class", "condition");
+
+let weatherTable = document.createElement("div");
+weatherTable.setAttribute("class", "weather-table");
 
 let weatherDataTitle = document.createElement("div");
 weatherDataTitle.setAttribute("class", "weather-data-title");
-weatherTable.appendChild(weatherDataTitle);
 
 let weatherData = document.createElement("div");
 weatherData.setAttribute("class", "weather-data");
+
+weatherBlock.appendChild(addressBanner);
+weatherBlock.appendChild(h1);
+weatherBlock.appendChild(conditionStatement);
+weatherBlock.appendChild(weatherTable);
+
+weatherTable.appendChild(weatherDataTitle);
 weatherTable.appendChild(weatherData);
 
 let dataTitle = ["Humidity", "Wind", "visibility"];
@@ -25,6 +33,7 @@ let dataTitle = ["Humidity", "Wind", "visibility"];
 function WeatherData(
   temp,
   address,
+  conditions,
   description,
   humidity,
   windgust,
@@ -32,6 +41,7 @@ function WeatherData(
 ) {
   this.temp = temp;
   this.address = address;
+  this.conditions = conditions;
   this.description = description;
   this.humidity = humidity;
   this.windgust = windgust;
@@ -56,14 +66,10 @@ fetch(
     let displayWeatherDataArray = [];
     displayWeatherDataArray.push(displayInfo);
 
-    // console.log(displayInfo);
     function displayWeatherData() {
-      weatherBlock.appendChild(addressBanner);
-      addressBanner.innerHTML = `Weather in
-        ${displayInfo.address} <br>`;
-      h1.innerHTML = `
-        ${displayInfo.temp}°
-    `;
+      addressBanner.innerHTML = `Weather in ${displayInfo.address} <br>`;
+      h1.innerHTML = `${displayInfo.temp}°`;
+      conditionStatement.innerHTML = `${displayInfo.conditions}`;
 
       dataTitle.forEach((title) => {
         const h3 = document.createElement("h3");
@@ -72,9 +78,17 @@ fetch(
       });
 
       displayWeatherDataArray.forEach((info) => {
-        const h3 = document.createElement("h3");
-        h3.innerHTML = `${info.humidity} ${info.windgust} ${info.visibility}`;
-        weatherData.appendChild(h3);
+        const properties = [
+          `${info.humidity}%`,
+          `${info.windgust} MPH`,
+          `${info.visibility} mi`,
+        ];
+
+        properties.forEach((property) => {
+          const h3 = document.createElement("h3");
+          h3.textContent = property;
+          weatherData.appendChild(h3);
+        });
       });
     }
     displayWeatherData();

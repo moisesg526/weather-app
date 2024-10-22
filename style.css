@@ -73,3 +73,12 @@ h1 {
   padding: 2rem;
   font-size: 1.2rem;
 }
+
+
+.weather-table {
+  display: flex;
+  justify-content:space-between ;
+  padding: 2rem;
+  width: 100%;
+  font-size: 1.2rem;
+}
