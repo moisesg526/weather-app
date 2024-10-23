@@ -28,6 +28,14 @@ body {
   background: none;
 }
 
+.submit {
+  position: absolute;
+  top: 0.5rem;
+  right: 0;
+  border: none;
+  cursor: pointer;
+}
+
 .weather_input:hover {
   border-color: rgb(46, 138, 177);
 }

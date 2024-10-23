@@ -7,10 +7,17 @@
     <title>Weather App</title>
   </head>
   <body>
-    <div class="weatherForm">
-      <input type="text" id="weather" class="weather_input" autocomplete="off" placeholder=" "/>
-      <label for="weather" class="weather_label">Search</label>
-    </div>
+    <form class="weatherForm" onsubmit="displayWeatherData()">
+      <input
+        type="text"
+        id="weather"
+        class="weather_input"
+        autocomplete="off"
+        placeholder=" "
+      />
+      <label for="weather" class="weather_label">Location</label>
+      <input type="submit" value="Search" class="submit">
+    </form>
     <div class="weather-block"></div>
     <script src="script.js"></script>
   </body>
