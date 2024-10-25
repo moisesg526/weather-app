@@ -1,5 +1,5 @@
 let key = "S5993HFYTHTPJ65Q3QMB3NEEJ";
-let locationOfWeather = prompt("Location");
+// let locationOfWeather = prompt("Location");
 
 let weatherBlock = document.querySelector(".weather-block");
 
