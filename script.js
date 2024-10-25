@@ -92,5 +92,4 @@ function displayWeatherData(info) {
   });
 }
 
-// Attach form validation function to form submission
 document.getElementById("weatherForm").addEventListener("submit", formValidation);
