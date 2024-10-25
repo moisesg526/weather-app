@@ -1,5 +1,4 @@
 let key = "S5993HFYTHTPJ65Q3QMB3NEEJ";
-// let locationOfWeather = prompt("Location");
 
 let weatherBlock = document.querySelector(".weather-block");
 
@@ -28,71 +27,70 @@ weatherBlock.appendChild(weatherTable);
 weatherTable.appendChild(weatherDataTitle);
 weatherTable.appendChild(weatherData);
 
-let dataTitle = ["Humidity", "Wind", "visibility"];
+let dataTitle = ["Humidity", "Wind", "Visibility"];
 
-function WeatherData(
-  temp,
-  address,
-  conditions,
-  description,
-  humidity,
-  windgust,
-  visibility
-) {
+function WeatherData(temp, address, conditions, humidity, windgust, visibility) {
   this.temp = temp;
   this.address = address;
   this.conditions = conditions;
-  this.description = description;
   this.humidity = humidity;
   this.windgust = windgust;
   this.visibility = visibility;
 }
 
-fetch(
-  `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${locationOfWeather}?key=${key}`,
-  { mode: "cors" }
-)
-  .then((res) => res.json())
-  .then((data) => {
-    const displayInfo = new WeatherData(
-      Math.round(data.currentConditions.temp),
-      data.resolvedAddress,
-      data.currentConditions.conditions,
-      Math.round(data.currentConditions.humidity),
-      Math.round(data.currentConditions.windgust),
-      Math.round(data.currentConditions.visibility)
-    );
+function formValidation(e) {
+  e.preventDefault();
+  let locationOfWeather = e.target.weather.value;
+  if (!locationOfWeather) {
+    alert("Please enter a location.");
+    return;
+  }
 
-    let displayWeatherDataArray = [];
-    displayWeatherDataArray.push(displayInfo);
+  fetch(
+    `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${locationOfWeather}?key=${key}`,
+    { mode: "cors" }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      const displayInfo = new WeatherData(
+        Math.round(data.currentConditions.temp),
+        data.resolvedAddress,
+        data.currentConditions.conditions,
+        Math.round(data.currentConditions.humidity),
+        Math.round(data.currentConditions.windgust),
+        Math.round(data.currentConditions.visibility)
+      );
 
-    function displayWeatherData() {
-      addressBanner.innerHTML = `Weather in ${displayInfo.address} <br>`;
-      h1.innerHTML = `${displayInfo.temp}°`;
-      conditionStatement.innerHTML = `${displayInfo.conditions}`;
+      displayWeatherData(displayInfo);
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Failed to retrieve weather data. Please try again.");
+    });
+}
 
-      dataTitle.forEach((title) => {
-        const h3 = document.createElement("h3");
-        h3.innerHTML = title;
-        weatherDataTitle.appendChild(h3);
-      });
+function displayWeatherData(info) {
+  addressBanner.innerHTML = `Weather in ${info.address} <br>`;
+  h1.innerHTML = `${info.temp}°`;
+  conditionStatement.innerHTML = `${info.conditions}`;
 
-      displayWeatherDataArray.forEach((info) => {
-        const properties = [
-          `${info.humidity}%`,
-          `${info.windgust} MPH`,
-          `${info.visibility} mi`,
-        ];
+  weatherDataTitle.innerHTML = "";
+  weatherData.innerHTML = "";
 
-        properties.forEach((property) => {
-          const h3 = document.createElement("h3");
-          h3.textContent = property;
-          weatherData.appendChild(h3);
-        });
-      });
-    }
-    displayWeatherData();
-  })
-  .catch((err) => {
-    console.error(err);
+  dataTitle.forEach((title) => {
+    const h3 = document.createElement("h3");
+    h3.innerHTML = title;
+    weatherDataTitle.appendChild(h3);
   });
+
+  const properties = [`${info.humidity}%`, `${info.windgust} MPH`, `${info.visibility} mi`];
+  
+  properties.forEach((property) => {
+    const h3 = document.createElement("h3");
+    h3.textContent = property;
+    weatherData.appendChild(h3);
+  });
+}
+
+// Attach form validation function to form submission
+document.getElementById("weatherForm").addEventListener("submit", formValidation);
